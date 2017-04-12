@@ -1,8 +1,11 @@
 <?php
 	if (isset($_POST['submit'])) {
 		include 'configuration.php';
-		if(!($dbconn = @mysql_connect($dbhost, $dbuser, $dbpass))) exit('Error connecting to database.');
-		mysql_select_db($db);
+		$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $db);
+  if (!$conn) {
+    	echo "failed";
+          die("Connection failed: " . mysqli_connect_error());
+  }
 
 		$name = $_POST['full_name'];
 		$username = $_POST['username'];
@@ -13,6 +16,6 @@
 		header("refresh:5;url=owner_dashboard.php");
 
 		$insert = "INSERT INTO person (name, username, contact_no, address) VALUES (' ".$name." ',' ".$username." ',' ".$contact." ',' ".$address." ')";
-		$query = mysql_query($insert);
+		$query = mysqli_query($insert);
 	}
 ?>

@@ -10,8 +10,11 @@
 <body>
   <?php
     include 'configuration.php';
-    if(!($dbconn = @mysql_connect($dbhost, $dbuser, $dbpass))) exit('Error connecting to database.');
-    mysql_select_db($db);
+    $conn = mysqli_connect($dbhost, $dbuser, $dbpass, $db);
+  if (!$conn) {
+    	echo "failed";
+          die("Connection failed: " . mysqli_connect_error());
+  }
   ?>
   <div class="container">
     <div class="container" id="logo">
@@ -26,12 +29,12 @@
       <div class="form-group row">
         <label for="example-text-input" class="col-xs-4 col-form-label text-right">Employee Name :</label>
         <?php
-          $selectemp = mysql_query('SELECT name FROM person WHERE role="Employee"');
+          $selectemp = mysqli_query('SELECT name FROM person WHERE role="Employee"');
         ?>
         <select name="employee" >
           <option value="selemp">-----Select Employee-----</option>
     <?php
-      while ($row = mysql_fetch_array($selectemp))
+      while ($row = mysqli_fetch_assoc($selectemp))
       {
     ?>
     <option value="<?php echo $row['name']?>"><?php echo $row['name']?></option>

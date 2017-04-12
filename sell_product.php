@@ -12,8 +12,11 @@
 	<body>
 		<?php
 	    	include 'configuration.php';
-	    	if(!($dbconn = @mysql_connect($dbhost, $dbuser, $dbpass))) exit('Error connecting to database.');
-	    	mysql_select_db($db);
+	    	$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $db);
+  if (!$conn) {
+    	echo "failed";
+          die("Connection failed: " . mysqli_connect_error());
+  }
   		?>
 		<div class="container">
 		    <div class="container" id="logo">
@@ -60,12 +63,12 @@
       					<div class="form-group row">
 					        <label for="prod_sell1" class="col-xs-4 col-form-label text-right">Select Product 1:</label>
 					        <?php
-					          $selectprod = mysql_query('SELECT * FROM product');
+					          $selectprod = mysqli_query('SELECT * FROM product');
 					        ?>
 					        <select name="product1" >
 					        	<option value="selpro">-----Select Product-----</option>
 					    		<?php
-					      			while ($row = mysql_fetch_array($selectprod))
+					      			while ($row = mysql_fetch_assoc($selectprod))
 					      			{
 					    		?>
 					    				<option value="<?php echo  $row['product_id'].','.$row['product_name'].','.$row['qty'].','.$row['exp_date'].','.$row['buy_ts'].','.$row['sp'];?>"><?php echo $row['product_id'].','.$row['product_name'].','.$row['qty'].','.$row['exp_date'].','.$row['sp'];?></option>
@@ -87,12 +90,12 @@
     					<div class="form-group row">
 					        <label for="prod_sell2" class="col-xs-4 col-form-label text-right">Select Product 2:</label>
 					        <?php
-					          $selectprod = mysql_query('SELECT * FROM product');
+					          $selectprod = mysqli_query('SELECT * FROM product');
 					        ?>
 					        <select name="product2" >
 					        	<option value="selpro">-----Select Product-----</option>
 					    		<?php
-					      			while ($row = mysql_fetch_array($selectprod))
+					      			while ($row = mysql_fetch_assoc($selectprod))
 					      			{
 					    		?>
 					    				<option value="<?php echo  $row['product_id'].','.$row['product_name'].','.$row['qty'].','.$row['exp_date'].','.$row['buy_ts'].','.$row['sp'];?>"><?php echo $row['product_id'].','.$row['product_name'].','.$row['qty'].','.$row['exp_date'].','.$row['sp'];?></option>
@@ -114,12 +117,12 @@
     					<div class="form-group row">
 					        <label for="prod_sell3" class="col-xs-4 col-form-label text-right">Select Product 3:</label>
 					        <?php
-					          $selectprod = mysql_query('SELECT * FROM product');
+					          $selectprod = mysqli_query('SELECT * FROM product');
 					        ?>
 					        <select name="product3" >
 					        	<option value="selpro">-----Select Product-----</option>
 					    		<?php
-					      			while ($row = mysql_fetch_array($selectprod))
+					      			while ($row = mysql_fetch_assoc($selectprod))
 					      			{
 					    		?>
 					    				<option value="<?php echo  $row['product_id'].','.$row['product_name'].','.$row['qty'].','.$row['exp_date'].','.$row['buy_ts'].','.$row['sp'];?>"><?php echo $row['product_id'].','.$row['product_name'].','.$row['qty'].','.$row['exp_date'].','.$row['sp'];?></option>

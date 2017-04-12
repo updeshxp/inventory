@@ -1,5 +1,5 @@
 <?php
-	$dbhost = 'localhost';
+	$dbhost = 'localhost:3306';
 	$db = 'inventory';
 	$dbtable = 'roles';
 	$dbuser = 'root';

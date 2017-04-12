@@ -21,8 +21,11 @@
 	{
 		include 'configuration.php';
 
-		if(!($dbconn = @mysql_connect($dbhost, $dbuser, $dbpass))) exit('Error connecting to database.');
-		mysql_select_db($db);
+		$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $db);
+  if (!$conn) {
+    	echo "failed";
+          die("Connection failed: " . mysqli_connect_error());
+  }
 
 		$prodname = $_POST['product_name'];
 		$category = $_POST['category'];
@@ -36,13 +39,13 @@
 		$ts = $date->getTimestamp();
 
 		$insert = "INSERT INTO product (product_name, category, qty, cp, sp, exp_date, buy_ts) VALUES (' ".$prodname." ',' ".$category." ',' ".$quantity." ',' ".$cp." ',' ".$sp." ',' ".$expdt." ',' ".date('Y-m-d H:i:s',$ts)." ')";
-		$query = mysql_query($insert);
+		$query = mysqli_query($insert);
 
 		$insert = "INSERT INTO mfg_company (product_name, company) VALUES (' ".$prodname." ', ' ".$mfgco." ')";
-		$query = mysql_query($insert);
+		$query = mysqli_query($insert);
 
 		$insert = "INSERT INTO category (product_name, category) VALUES (' ".$prodname." ', ' ".$category." ')";
-		$query = mysql_query($insert);
+		$query = mysqli_query($insert);
 
 ?>
 	<div class = "progress progress-striped active">

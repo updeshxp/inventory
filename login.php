@@ -6,13 +6,16 @@
 
 		$username = stripslashes($_POST['username']);
 		$password = stripslashes($_POST['pwd']);
-
-		if(!($dbconn = @mysql_connect($dbhost, $dbuser, $dbpass))) exit('Error connecting to database.');
-		mysql_select_db($db);
-
-		$getCreds = mysql_query("SELECT role FROM ".$dbtable." WHERE username='".$username."' AND password='".$password."'");
-		$gotCreds = mysql_fetch_array($getCreds);
-
+		$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $db);
+		if (!$conn) {
+				echo "failed";
+				    die("Connection failed: " . mysqli_connect_error());
+		}
+		echo "Connected successfully";
+		$getCreds = "SELECT role FROM ".$dbtable." WHERE username='".$username."' AND password='".$password."'";
+		$qwerty = mysqli_query($conn, $getCreds);
+		$gotCreds = mysqli_fetch_assoc($qwerty);
+		
 		if(strcmp($gotCreds['role'],'admin')==0){
 			$_SESSION['admin']='administrator';
 			header("Location: admin_dashboard.php");

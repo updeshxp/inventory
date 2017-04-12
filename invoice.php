@@ -1,8 +1,11 @@
 <?php
 	if( isset($_POST['submit']) ){
 		include 'configuration.php';
-		if(!($dbconn = @mysql_connect($dbhost, $dbuser, $dbpass))) exit('Error connecting to database.');
-		mysql_select_db($db);
+		$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $db);
+  if (!$conn) {
+    	echo "failed";
+          die("Connection failed: " . mysqli_connect_error());
+  }
 
 		$custname = $_POST['customer_name'];
 		$custcon = $_POST['customer_con'];
@@ -49,39 +52,39 @@
 		echo "***************************<br /><b>TOTAL BILL - Rs.	".$bill."</b><br />";
 
 		$insert = "INSERT INTO person (name,contact_no,address, role) VALUES ('".$custname."','".$custcon."','".$custaddr."','Customer')";
-		$query = mysql_query($insert);
+		$query = mysqli_query($insert);
 
 		$date = new DateTime();
 		$ts = $date->getTimestamp();
 		$insert = "INSERT INTO transaction (txn_timestamp,txn_type) VALUES ('".date('Y-m-d H:i:s',$ts)."','S')";
-		$query = mysql_query($insert);
-		$txnid = mysql_insert_id();
+		$query = mysqli_query($insert);
+		$txnid = mysqli_insert_id();
 
 		for($i=1;$i<=3;$i++)
 			{
 				$insert = "INSERT INTO txn_on (product_name, txn_timestamp, expiry_date, cp, id, qty_buy_sell, txn_type) VALUES ('".${'p'.$i.'name'}."','".${'p'.$i.'ts'}."','".${'p'.$i.'expd'}."','".${'p'.$i.'cp'}."','".$txnid."','".${'noof'.$i}."', 'S')";
-				$query = mysql_query($insert);
+				$query = mysqli_query($insert);
 			}
 
-					$check = mysql_query("SELECT * FROM product WHERE product_id='".$p1id."' ");
-					$query = mysql_fetch_array($check);
+					$check = mysqli_query("SELECT * FROM product WHERE product_id='".$p1id."' ");
+					$query = mysqli_fetch_array($check);
 					$qtyf=$query['qty']-$noof1;
 
-					$query= mysql_query("UPDATE product SET qty=".$qtyf." WHERE product_id='".$p1id."'");
+					$query= mysqli_query("UPDATE product SET qty=".$qtyf." WHERE product_id='".$p1id."'");
 
 
-					$check = mysql_query("SELECT * FROM product WHERE product_id='".$p2id."' ");
-					$query = mysql_fetch_array($check);
+					$check = mysqli_query("SELECT * FROM product WHERE product_id='".$p2id."' ");
+					$query = mysqli_fetch_array($check);
 					$qtyf=$query['qty']-$noof2;
 
-					$query= mysql_query("UPDATE product SET qty=".$qtyf." WHERE product_id='".$p2id."'");
+					$query= mysqli_query("UPDATE product SET qty=".$qtyf." WHERE product_id='".$p2id."'");
 
 
-					$check = mysql_query("SELECT * FROM product WHERE product_id='".$p3id."' ");
-					$query = mysql_fetch_array($check);
+					$check = mysqli_query("SELECT * FROM product WHERE product_id='".$p3id."' ");
+					$query = mysqli_fetch_array($check);
 					$qtyf=$query['qty']-$noof3;
 
-					$query= mysql_query("UPDATE product SET qty=".$qtyf." WHERE product_id='".$p3id."'");
+					$query= mysqli_query("UPDATE product SET qty=".$qtyf." WHERE product_id='".$p3id."'");
 
 		echo "<b>BILL NO......................................................".$txnid."</b><br />";
 

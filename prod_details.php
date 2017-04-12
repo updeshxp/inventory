@@ -19,16 +19,19 @@
 <?php
 	if( isset($_POST['submit']) ){
 		include 'configuration.php';
-		if(!($dbconn = @mysql_connect($dbhost, $dbuser, $dbpass))) exit('Error connecting to database.');
-		mysql_select_db($db);
+		$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $db);
+  if (!$conn) {
+    	echo "failed";
+          die("Connection failed: " . mysqli_connect_error());
+  }
 
 		$selpro=$_POST['prod'];
 		$p=explode(",", $selpro);
 		$pid=$p[0];
 		$pname=$p[1];
 
-		$selectemp = mysql_query('SELECT * FROM product WHERE product_id='.$pid.'');
-		$row = mysql_fetch_array($selectemp);
+		$selectemp = mysqli_query('SELECT * FROM product WHERE product_id='.$pid.'');
+		$row = mysqli_fetch_assoc($selectemp);
 
 		echo "Product ID: &nbsp" .$row['product_id']."<br>";
 		echo "Product Name: &nbsp".$row['product_name']."<br>";

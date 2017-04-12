@@ -19,20 +19,22 @@
 <?php
 	if( isset($_POST['submit']) ){
 		include 'configuration.php';
-		if(!($dbconn = @mysql_connect($dbhost, $dbuser, $dbpass))) exit('Error connecting to database.');
-		mysql_select_db($db);
-
+		$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $db);
+  if (!$conn) {
+    	echo "failed";
+          die("Connection failed: " . mysqli_connect_error());
+  }
 		$selprod=$_POST['prod'];
 
 
 		$del = "DELETE FROM product WHERE product_name='".$selprod."'";
-		$query = mysql_query($del);
+		$query = mysqli_query($del);
 
 		$del = "DELETE FROM mfg_company WHERE product_name='".$selprod."'";
-		$query = mysql_query($del);
+		$query = mysqli_query($del);
 
 		$del = "DELETE FROM category WHERE product_name='".$selprod."'";
-		$query = mysql_query($del);
+		$query = mysqli_query($del);
 ?>
 		<div class = "progress progress-striped active">
 					<div class = "progress-bar progress-bar-success" role = "progressbar" aria-valuenow = "60" aria-valuemin = "0" aria-valuemax = "100" style = "width: 40%;">
